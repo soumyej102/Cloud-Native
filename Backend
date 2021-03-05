@@ -1,0 +1,48 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
+from datetime import date
+from typing import List,Optional
+
+database = []
+class Books(BaseModel):
+        book_id: int
+        book_name: str
+        publisher: str
+        
+app = FastAPI()
+
+@app.get('/')
+def basic():
+	return "Welcome to my very first Backend!!! It is a system for getting the books available in a school's library"
+
+@app.get('/date')
+def return_date():
+        tod = date.today()
+        return "Today's date is ",tod
+
+@app.get('/name')
+def book_name():
+        return database
+
+@app.get('/name/{bid}')
+def get_names_of_book(bid: int):
+        boid = bid-1
+        return database[boid]
+        
+@app.post('/add_books')
+def addbook(book: Books):
+	database.append(book.dict())
+	return "Book has been added"
+
+@app.delete('/del_book/{booid}')
+def delete_book(booid: int):
+        database.pop(booid-1)
+        return {"task":"book has been deleted"}
+
+
+@app.put('/update_book/{booki}',response_model=Books)
+def updating_book(booki: int, book: Books):
+        bookid = booki-1
+        database[bookid] = book.dict()
+        return "Book has been updated"
