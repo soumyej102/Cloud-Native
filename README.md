@@ -1,1 +1,1 @@
-# Team : Soumye Joshi and Siddharth Nair
+# Team : Soumye Joshi
